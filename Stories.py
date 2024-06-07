@@ -2,15 +2,28 @@ import random
 import math
 
 
-def get_random_estimates():
+def get_random_estimates(type='story'):
     base_complexity = random.randrange(start=1, stop=10, step=2) / 10
-    price = int(50 + base_complexity * 50)
+
+    if type == 'story':
+        match base_complexity:
+            case _ if base_complexity > 0.8: price = 150
+            case _ if base_complexity > 0.6: price = 120
+            case _ if base_complexity > 0.4: price = 100
+            case _ if base_complexity > 0.2: price = 80
+            case _: price = 60
+    elif type == 'expedite':
+        match base_complexity:
+            case _ if base_complexity > 0.5:
+                price = 3000
+            case _:
+                price = 2000
+        price = price*-1 if random.randrange(2) > 0 else price
     dev_estimate = math.floor(4 + base_complexity * 10)
     analyst_estimate = math.floor(dev_estimate / 3 + base_complexity * 10)
     test_estimate = math.floor(dev_estimate / 3 + base_complexity * 10)
     return {'price': price, 'analyst_estimate': analyst_estimate, 'dev_estimate': dev_estimate,
             'test_estimate': test_estimate}
-
 
 class Stories:
     def __init__(self):
@@ -51,7 +64,7 @@ class Stories:
         stories = []
         for i in range(count):
             due_day = i + 9
-            estimate = get_random_estimates()
+            estimate = get_random_estimates(type='expedite')
             stories.append(ExpediteStory(num=i, letter_index=letter_index, price=estimate['price'],
                                          analyst_estimate=estimate['analyst_estimate'],
                                          dev_estimate=estimate['dev_estimate'],
