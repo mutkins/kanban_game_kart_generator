@@ -3,27 +3,50 @@ import math
 
 
 def get_random_estimates(type='story'):
-    base_complexity = random.randrange(start=1, stop=10, step=2) / 10
+    start = 1
+    stop = 10
+    step = 2
+    base_complexity = random.randrange(start=start, stop=stop, step=step) / 10
 
     if type == 'story':
         match base_complexity:
-            case _ if base_complexity > 0.8: price = 150
-            case _ if base_complexity > 0.6: price = 120
-            case _ if base_complexity > 0.4: price = 100
-            case _ if base_complexity > 0.2: price = 80
-            case _: price = 60
+            case _ if base_complexity > (start + stop - 1)/10 / 5 * 4:
+                price = 150
+            case _ if base_complexity > (start + stop - 1)/10 / 5 * 3:
+                price = 120
+            case _ if base_complexity > (start + stop - 1)/10 / 5 * 2:
+                price = 100
+            case _ if base_complexity > (start + stop - 1)/10 / 5:
+                price = 80
+            case _:
+                price = 60
     elif type == 'expedite':
         match base_complexity:
             case _ if base_complexity > 0.5:
                 price = 3000
             case _:
                 price = 2000
-        price = price*-1 if random.randrange(2) > 0 else price
+        price = price * -1 if random.randrange(2) > 0 else price
+
+    match base_complexity:
+        case _ if base_complexity > (start + stop - 1) / 10 / 5 * 4:
+            stability_score = 5
+        case _ if base_complexity > (start + stop - 1) / 10 / 5 * 3:
+            stability_score = 4
+        case _ if base_complexity > (start + stop - 1) / 10 / 5 * 2:
+            stability_score = 3
+        case _ if base_complexity > (start + stop - 1) / 10 / 5:
+            stability_score = 2
+        case _:
+            stability_score = 1
+
     dev_estimate = math.floor(4 + base_complexity * 10)
-    analyst_estimate = math.floor(dev_estimate / 3 + base_complexity * 10)
-    test_estimate = math.floor(dev_estimate / 3 + base_complexity * 10)
+    analyst_estimate = math.floor(dev_estimate / 2.5 + random.randrange(0, 5))
+    test_estimate = math.floor(dev_estimate / 2.5 + random.randrange(0, 5))
+
     return {'price': price, 'analyst_estimate': analyst_estimate, 'dev_estimate': dev_estimate,
-            'test_estimate': test_estimate}
+            'test_estimate': test_estimate, 'stability_score': stability_score}
+
 
 class Stories:
     def __init__(self):
@@ -41,7 +64,7 @@ class Stories:
     def generate_f_stories(self, count, letter_index='F'):
         stories = []
         for i in range(count):
-            due_day = i + 9
+            due_day = i + 15
             estimate = get_random_estimates()
             stories.append(FixedDateStory(num=i, letter_index=letter_index, price=estimate['price'],
                                           analyst_estimate=estimate['analyst_estimate'],
@@ -52,18 +75,17 @@ class Stories:
     def generate_i_stories(self, count, letter_index='I'):
         stories = []
         for i in range(count):
-            due_day = i + 9
             estimate = get_random_estimates()
-            stories.append(IntangibleStory(num=i, letter_index=letter_index, price=estimate['price'],
+            stories.append(IntangibleStory(num=i, letter_index=letter_index,
                                            analyst_estimate=estimate['analyst_estimate'],
                                            dev_estimate=estimate['dev_estimate'],
-                                           test_estimate=estimate['test_estimate']))
+                                           test_estimate=estimate['test_estimate'], stability_score=estimate['stability_score']))
         self.stories_list.append(stories)
 
     def generate_e_stories(self, count, letter_index='I'):
         stories = []
         for i in range(count):
-            due_day = i + 9
+            due_day = i + 18
             estimate = get_random_estimates(type='expedite')
             stories.append(ExpediteStory(num=i, letter_index=letter_index, price=estimate['price'],
                                          analyst_estimate=estimate['analyst_estimate'],
@@ -104,10 +126,11 @@ class FixedDateStory(Story):
 
 class IntangibleStory(Story):
     def __init__(self, num, letter_index='I', price=0, analyst_estimate=0, dev_estimate=0, test_estimate=0,
-                 date_created='1976-01-01', color='green'):
+                 date_created='1976-01-01', color='green', stability_score=0):
         super().__init__(letter_index=letter_index, price=price, analyst_estimate=analyst_estimate,
                          dev_estimate=dev_estimate, test_estimate=test_estimate, date_created=date_created, color=color,
                          num=num)
+        self.stability_score = stability_score
 
 
 class ExpediteStory(Story):

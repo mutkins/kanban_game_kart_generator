@@ -12,9 +12,9 @@ sheet = workbook.active
 stories = Stories()
 
 stories.generate_u_stories(letter_index='S', count=50)
-stories.generate_f_stories(letter_index='F', count=25)
-stories.generate_i_stories(letter_index='I', count=10)
-stories.generate_e_stories(letter_index='E', count=10)
+stories.generate_f_stories(letter_index='F', count=26)
+stories.generate_i_stories(letter_index='I', count=14)
+stories.generate_e_stories(letter_index='E', count=20)
 
 for stories_list in stories.stories_list:
     sheet = workbook.create_sheet()
