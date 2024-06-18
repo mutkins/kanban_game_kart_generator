@@ -1,6 +1,6 @@
 import random
 
-INTANGIBLE_TITLES_LIST = [
+OPTIMIZATION_TITLES_LIST = [
     "Рефакторинг модуля загрузки",
     "Рефакторинг запросов к БД",
     "Рефакторинг аутентификации",
@@ -18,8 +18,4 @@ INTANGIBLE_TITLES_LIST = [
     "Провалидировать автотесты"
 ]
 
-gen = (i for i in INTANGIBLE_TITLES_LIST)
-
-
-def get_random_title():
-    return INTANGIBLE_TITLES_LIST[random.randrange(0, INTANGIBLE_TITLES_LIST.__len__())]
+gen = (i for i in OPTIMIZATION_TITLES_LIST)

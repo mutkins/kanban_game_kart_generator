@@ -72,17 +72,17 @@ class Stories:
                                           test_estimate=estimate['test_estimate'], due_day=due_day))
         self.stories_list.append(stories)
 
-    def generate_i_stories(self, count, letter_index='I'):
+    def generate_o_stories(self, count, letter_index='O'):
         stories = []
         for i in range(count):
             estimate = get_random_estimates()
-            stories.append(IntangibleStory(num=i, letter_index=letter_index,
-                                           analyst_estimate=estimate['analyst_estimate'],
-                                           dev_estimate=estimate['dev_estimate'],
-                                           test_estimate=estimate['test_estimate'], stability_score=estimate['stability_score']))
+            stories.append(OptimizationStory(num=i, letter_index=letter_index,
+                                             analyst_estimate=estimate['analyst_estimate'],
+                                             dev_estimate=estimate['dev_estimate'],
+                                             test_estimate=estimate['test_estimate'], stability_score=estimate['stability_score']))
         self.stories_list.append(stories)
 
-    def generate_e_stories(self, count, letter_index='I'):
+    def generate_e_stories(self, count, letter_index='E'):
         stories = []
         for i in range(count):
             due_day = i + 18
@@ -124,8 +124,8 @@ class FixedDateStory(Story):
         self.due_day = due_day
 
 
-class IntangibleStory(Story):
-    def __init__(self, num, letter_index='I', price=0, analyst_estimate=0, dev_estimate=0, test_estimate=0,
+class OptimizationStory(Story):
+    def __init__(self, num, letter_index='O', price=0, analyst_estimate=0, dev_estimate=0, test_estimate=0,
                  date_created='1976-01-01', color='green', stability_score=0):
         super().__init__(letter_index=letter_index, price=price, analyst_estimate=analyst_estimate,
                          dev_estimate=dev_estimate, test_estimate=test_estimate, date_created=date_created, color=color,
