@@ -79,7 +79,7 @@ def place_story_on_sheet(stories_list, sheet, columns=[1, 19]):
             case 'O':
                 title = next(gen)
             case 'E':
-                title = f'Крайний срок: {story.due_day} день'
+                title = f'Срок: {story.due_day} дня'
 
         title_cell.value = title
         title_cell.alignment = Alignment(horizontal='center')
@@ -125,6 +125,29 @@ def place_troubles_on_sheet(troubles_list, sheet, columns=[1, 19]):
         story_num_cell.font = Font(bold=True, size=12)
         sheet.merge_cells(start_column=start_column, end_column=start_column + 2, start_row=row, end_row=row)
 
+
+def place_modoficators_on_sheet(mod_list, sheet, columns=[1, 19]):
+    sheet.column_dimensions = set_dim_holder(ws=sheet)
+    row = -9
+    for i, mod in enumerate(mod_list):
+        # распределяем карточки по двум колонкам
+        if not i % 2:
+            start_column = columns[0]
+            row += 10
+        else:
+            start_column = columns[1]
+
+        # Write outline border and fill the card with color
+        write_outline_border(sheet=sheet, start_row=row, start_column=start_column, size={'c': 17, 'r': 9})
+
+        # Place the text
+        text_cell = sheet.cell(row=row + 1, column=start_column + 1)
+        text = mod.text
+        text_cell.value = text
+        text_cell.alignment = Alignment(horizontal='center', vertical='center', wrapText=True)
+        text_cell.font = Font(bold=False, size=10)
+        sheet.merge_cells(start_column=start_column + 1, end_column=start_column + 15, start_row=row + 1,
+                          end_row=row + 7)
 
 def write_outline_border(sheet, start_row, start_column, size):
     stop_row = start_row + size['r']

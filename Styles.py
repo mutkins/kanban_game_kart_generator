@@ -10,6 +10,7 @@ MED_YELLOW_FILL = PatternFill("lightGray", start_color="FFFF00")
 MED_RED_FILL = PatternFill("lightGray", start_color="FF0000")
 MED_BLACK_FILL = PatternFill("lightGray", start_color="000000")
 NO_FILL = PatternFill("lightGray", start_color="FFFFFF")
+MED_BIRUZA = PatternFill("lightGray", start_color="40E0D0")
 
 GREEN_FILL = PatternFill("darkGray", start_color="92D050")
 BLUE_FILL = PatternFill("darkGray", start_color="00B0F0")

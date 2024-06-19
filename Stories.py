@@ -63,8 +63,10 @@ class Stories:
 
     def generate_f_stories(self, count, letter_index='F'):
         stories = []
+        j = 9
         for i in range(count):
-            due_day = i + 15
+            due_day = j + 4 + random.randrange(0, 3)
+            j += 5
             estimate = get_random_estimates()
             stories.append(FixedDateStory(num=i, letter_index=letter_index, price=estimate['price'],
                                           analyst_estimate=estimate['analyst_estimate'],
@@ -85,7 +87,7 @@ class Stories:
     def generate_e_stories(self, count, letter_index='E'):
         stories = []
         for i in range(count):
-            due_day = i + 18
+            due_day = random.randrange(3, 5)
             estimate = get_random_estimates(type='expedite')
             stories.append(ExpediteStory(num=i, letter_index=letter_index, price=estimate['price'],
                                          analyst_estimate=estimate['analyst_estimate'],
